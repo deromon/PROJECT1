@@ -3,9 +3,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/utility/routes.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   const LoginPage({ Key? key }) : super(key: key);
+  @override
+  _LoginPageState createState() => _LoginPageState();
+}
 
+class _LoginPageState extends State<LoginPage> {
+  String name="";
+  bool changeButton = false;
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -31,7 +37,7 @@ class LoginPage extends StatelessWidget {
           ),
           Center(
           child: Text(
-            "login",
+            "login , $name",
             style: TextStyle(
               fontSize: 34,
               color: Colors.black,
@@ -60,6 +66,12 @@ class LoginPage extends StatelessWidget {
               hintText: "Enter passwrd",
               labelText: "Password",
             ),
+            onChanged: (value) {
+              name = value;
+              setState(() {
+                
+              });
+            },
           ),
                   ],
                 ),
@@ -68,16 +80,50 @@ class LoginPage extends StatelessWidget {
           height: 20,
         
         ),
-        ElevatedButton(
-                child: Text("Login"),
-                style: TextButton.styleFrom(
-                  minimumSize: Size(100, 50),
-                ),
-                onPressed: () {
-                  Navigator.pushNamed(context, MyRoutes.homeRoutes);
-                },
-              )
-        ],
+        InkWell(
+          onTap: () async {
+            setState(() {
+              changeButton = true;
+            });
+            await Future.delayed(Duration(seconds: 1));
+            Navigator.pushNamed(context, MyRoutes.homeRoutes);
+          },
+          child: AnimatedContainer(
+            duration: Duration(seconds: 1),
+            width: changeButton? 50:100, 
+            height: 50,
+            alignment: Alignment.center,
+             
+            child: changeButton
+                      ? Icon(
+                          Icons.done,
+                          color: Colors.grey,
+                        )
+                      : Text(
+              "login",
+              style: TextStyle(
+                color: Colors.grey,
+                fontWeight: FontWeight.bold,
+                fontSize: 20,
+              ),
+            ),
+            decoration: BoxDecoration(
+              color: Colors.black,
+              //shape: changeButton ? BoxShape.circle : BoxShape.rectangle,
+             borderRadius: BorderRadius.circular(changeButton?50:8)
+            ),
+          ),
+        )
+        // ElevatedButton(
+        //         child: Text("Login"),
+        //         style: TextButton.styleFrom(
+        //           minimumSize: Size(100, 50),
+        //         ),
+        //         onPressed: () {
+        //           Navigator.pushNamed(context, MyRoutes.homeRoutes);
+        //         },
+        //       )
+         ],
         
           ),
       )
